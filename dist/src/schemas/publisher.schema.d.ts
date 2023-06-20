@@ -26,7 +26,7 @@
 interface IPublisher {
     publisherName: string;
 }
-export declare const publishers: import("mongoose").Model<IPublisher, {}, {}, {}, import("mongoose").Document<unknown, {}, IPublisher> & Omit<IPublisher & {
+export declare const publisher: import("mongoose").Model<IPublisher, {}, {}, {}, import("mongoose").Document<unknown, {}, IPublisher> & Omit<IPublisher & {
     _id: import("mongoose").Types.ObjectId;
 }, never>, any>;
 export {};

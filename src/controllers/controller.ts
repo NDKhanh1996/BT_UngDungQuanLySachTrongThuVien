@@ -1,11 +1,13 @@
 import { book } from '../schemas/book.schema';
-import { publishers } from '../schemas/publisher.schema';
+import { publisher } from '../schemas/publisher.schema';
 import { Request, Response } from 'express';
 
 export class Controller {
     static async getBookList(req: Request, res: Response): Promise<any> {
         try {
-            const books = await book.find();
+            const books = await book.find().populate('publisher');
+            
+            console.log(publisher);
             res.render('listBook', { books: books });
         } catch (error) {
             res.render(error.message);
@@ -21,7 +23,7 @@ export class Controller {
     static async addBook(req: Request, res: Response): Promise<any> {
         try {
             const { catalog, name, author, keyword, publisher } = req.body;
-            const newPublisher = new publishers({
+            const newPublisher = new publisher({
                 publisherName: publisher
             });
             const newBook = new book({

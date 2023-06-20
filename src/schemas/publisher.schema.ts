@@ -8,4 +8,4 @@ const publisherSchema = new Schema<IPublisher>({
     publisherName: String
 });
 
-export const publishers = model<IPublisher>('publisher', publisherSchema, 'publishers');
+export const publisher = model<IPublisher>('publisher', publisherSchema, 'publishers');
