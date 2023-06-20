@@ -36,7 +36,7 @@
         <h3>name: <%= book.name %></h3>
         <p>catalog: <%= book.catalog %></p>
         <p>Author: <%= book.author %></p>
-        <p>publisher: <%= book.publisher.publisherName %></p>
+        <p>publisher: <%= book.publisher[0].name %></p>
         <p>Keyword: <%= book.keywords[0].keyword %></p>
         <button onclick="update('<%= book.id %>')">Update</button>
         <button onclick="deleteBook('<%= book.id %>')">Delete</button>

@@ -1,11 +1,11 @@
-import { book } from '../schemas/book.schema';
-import { publishers } from '../schemas/publisher.schema';
+import { Book } from '../schemas/book.schema';
+import { Publishers } from '../schemas/publisher.schema';
 import { Request, Response } from 'express';
 
 export class Controller {
     static async getBookList(req: Request, res: Response): Promise<any> {
         try {
-            const books = await book.find();
+            const books = await Book.find().populate('publisher');
             res.render('listBook', { books: books });
         } catch (error) {
             res.render(error.message);
@@ -20,17 +20,18 @@ export class Controller {
     }
     static async addBook(req: Request, res: Response): Promise<any> {
         try {
-            const { catalog, name, author, keyword, publisher } = req.body;
-            const newPublisher = new publishers({
-                publisherName: publisher
+            const { bookCatalog, bookName, bookAuthor, bookKeyword, bookPublisher } = req.body;
+            const newPublisher = new Publishers({
+                name: bookPublisher
             });
-            const newBook = new book({
-                catalog: catalog,
-                name: name,
-                author: author,
+            const newBook = new Book({
+                catalog: bookCatalog,
+                name: bookName,
+                author: bookAuthor,
+                keywords: [],
                 publisher: newPublisher
             });
-            newBook.keywords.push({ keyword });
+            newBook.keywords.push({ keyword: bookKeyword });
             await newBook.save();
             await newPublisher.save();
             res.redirect('/')

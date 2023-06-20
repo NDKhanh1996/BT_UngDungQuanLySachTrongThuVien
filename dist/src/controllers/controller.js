@@ -6,7 +6,7 @@ const publisher_schema_1 = require("../schemas/publisher.schema");
 class Controller {
     static async getBookList(req, res) {
         try {
-            const books = await book_schema_1.book.find();
+            const books = await book_schema_1.Book.find().populate('publisher');
             res.render('listBook', { books: books });
         }
         catch (error) {
@@ -23,22 +23,20 @@ class Controller {
     }
     static async addBook(req, res) {
         try {
-            const { catalog, name, author, keyword, publisher } = req.body;
-            const newPublisher = new publisher_schema_1.publishers({
-                publisherName: publisher
+            const { bookCatalog, bookName, bookAuthor, bookKeyword, bookPublisher } = req.body;
+            const newPublisher = new publisher_schema_1.Publishers({
+                name: bookPublisher
             });
-            const newBook = new book_schema_1.book({
-                catalog: catalog,
-                name: name,
-                author: author,
+            const newBook = new book_schema_1.Book({
+                catalog: bookCatalog,
+                name: bookName,
+                author: bookAuthor,
+                keywords: [],
                 publisher: newPublisher
             });
-            newBook.keywords.push({ keyword });
+            newBook.keywords.push({ keyword: bookKeyword });
             await newBook.save();
             await newPublisher.save();
-            console.log(publisher);
-            console.log(newPublisher);
-            console.log(newBook.publisher);
             res.redirect('/');
         }
         catch (error) {
