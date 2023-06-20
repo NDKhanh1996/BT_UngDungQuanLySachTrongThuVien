@@ -45,19 +45,13 @@ class Controller {
     }
     static async searchBook(req, res) {
         try {
-            const searchInput = req.query;
-            const books = await book_schema_1.Book.find().populate('publisher');
-            let booksFound = [];
-            books.forEach((book) => {
-                book.keywords.forEach((keyword) => {
-                    if (keyword.keyword == searchInput.search)
-                        booksFound.push(book);
-                });
-                book.publisher.forEach((publisher) => {
-                    if (publisher.name == searchInput.search)
-                        booksFound.push(book);
-                });
-            });
+            const searchInput = req.query.search;
+            const booksFound = await book_schema_1.Book.find({
+                $or: [
+                    { 'keywords.keyword': searchInput },
+                    { 'publisher': { $in: await publisher_schema_1.Publishers.find({ 'name': searchInput }, '_id') } }
+                ]
+            }).populate('publisher').exec();
             res.render('listBook', { books: booksFound });
         }
         catch (error) {

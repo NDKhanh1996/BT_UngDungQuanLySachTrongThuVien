@@ -44,20 +44,13 @@ export class Controller {
 
     static async searchBook(req: Request, res: Response): Promise<any> {
         try {
-            const searchInput = req.query;
-            const books = await Book.find().populate('publisher');
-            let booksFound = [];
-            books.forEach((book) => {
-                book.keywords.forEach((keyword) => {
-                    //@ts-ignore
-                    if (keyword.keyword == searchInput.search) booksFound.push(book);
-                })
-
-                book.publisher.forEach((publisher) => {
-                    //@ts-ignore
-                    if (publisher.name == searchInput.search) booksFound.push(book);
-                })
-            });
+            const searchInput = req.query.search;
+            const booksFound = await Book.find({
+                $or: [
+                    { 'keywords.keyword': searchInput },
+                    { 'publisher': { $in: await Publishers.find({ 'name': searchInput }, '_id') } }
+                ]
+            }).populate('publisher').exec();
             res.render('listBook', { books: booksFound });
         } catch (error) {
             res.render(error.message);
