@@ -43,6 +43,27 @@ class Controller {
             res.render(error.message);
         }
     }
+    static async searchBook(req, res) {
+        try {
+            const searchInput = req.query;
+            const books = await book_schema_1.Book.find().populate('publisher');
+            let booksFound = [];
+            books.forEach((book) => {
+                book.keywords.forEach((keyword) => {
+                    if (keyword.keyword == searchInput.search)
+                        booksFound.push(book);
+                });
+                book.publisher.forEach((publisher) => {
+                    if (publisher.name == searchInput.search)
+                        booksFound.push(book);
+                });
+            });
+            res.render('listBook', { books: booksFound });
+        }
+        catch (error) {
+            res.render(error.message);
+        }
+    }
 }
 exports.Controller = Controller;
 //# sourceMappingURL=controller.js.map

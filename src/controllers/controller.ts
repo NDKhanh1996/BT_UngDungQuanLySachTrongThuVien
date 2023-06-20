@@ -11,6 +11,7 @@ export class Controller {
             res.render(error.message);
         }
     }
+
     static async showAddBookPage(req: Request, res: Response): Promise<any> {
         try {
             res.render('createBook');
@@ -18,6 +19,7 @@ export class Controller {
             res.render(error.message);
         }
     }
+
     static async addBook(req: Request, res: Response): Promise<any> {
         try {
             const { bookCatalog, bookName, bookAuthor, bookKeyword, bookPublisher } = req.body;
@@ -35,6 +37,28 @@ export class Controller {
             await newBook.save();
             await newPublisher.save();
             res.redirect('/')
+        } catch (error) {
+            res.render(error.message);
+        }
+    }
+
+    static async searchBook(req: Request, res: Response): Promise<any> {
+        try {
+            const searchInput = req.query;
+            const books = await Book.find().populate('publisher');
+            let booksFound = [];
+            books.forEach((book) => {
+                book.keywords.forEach((keyword) => {
+                    //@ts-ignore
+                    if (keyword.keyword == searchInput.search) booksFound.push(book);
+                })
+
+                book.publisher.forEach((publisher) => {
+                    //@ts-ignore
+                    if (publisher.name == searchInput.search) booksFound.push(book);
+                })
+            });
+            res.render('listBook', { books: booksFound });
         } catch (error) {
             res.render(error.message);
         }
