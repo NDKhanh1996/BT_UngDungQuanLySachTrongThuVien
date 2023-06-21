@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
 interface IPublisher {
-    Name: string;
+    name: string;
 }
 
 const publisherSchema = new Schema<IPublisher>({
-    Name: String
+    name: String
 });
 
-export const publisher = model<IPublisher>('Publisher', publisherSchema, 'publishers');
+export const Publishers = model<IPublisher>('Publisher', publisherSchema, 'publishers');

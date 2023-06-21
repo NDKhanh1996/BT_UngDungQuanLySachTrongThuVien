@@ -6,7 +6,7 @@ const book_schema_1 = require("../schemas/book.schema");
 class Controller {
     static async getBookList(req, res) {
         try {
-            const books = await book_schema_1.book.find({}).populate('publishers');
+            const books = await book_schema_1.Book.find().populate('publisher');
             res.render('listBook', { books: books });
         }
         catch (error) {
@@ -24,18 +24,35 @@ class Controller {
     }
     static async addBook(req, res) {
         try {
-            const { catalog, name, author, keyword, publisher_id } = req.body;
-            const publisherChose = await publisher_schema_1.publisher.findOne({ _id: publisher_id });
-            const newBook = new book_schema_1.book({
-                catalog: catalog,
-                name: name,
-                author: author,
-                publishers: []
+            const { bookCatalog, bookName, bookAuthor, bookKeyword, bookPublisher } = req.body;
+            const newPublisher = new publisher_schema_1.Publishers({
+                name: bookPublisher
             });
-            newBook.keywords.push({ keyword });
-            newBook.publishers.push(publisherChose);
+            const newBook = new book_schema_1.Book({
+                catalog: bookCatalog,
+                name: bookName,
+                author: bookAuthor,
+                keywords: [],
+                publisher: newPublisher
+            });
+            newBook.keywords.push({ keyword: bookKeyword });
             await newBook.save();
             res.redirect('/');
+        }
+        catch (error) {
+            res.render(error.message);
+        }
+    }
+    static async searchBook(req, res) {
+        try {
+            const searchInput = req.query.search;
+            const booksFound = await book_schema_1.Book.find({
+                $or: [
+                    { 'keywords.keyword': searchInput },
+                    { 'publisher': { $in: await publisher_schema_1.Publishers.find({ 'name': searchInput }, '_id') } }
+                ]
+            }).populate('publisher').exec();
+            res.render('listBook', { books: booksFound });
         }
         catch (error) {
             res.render(error.message);

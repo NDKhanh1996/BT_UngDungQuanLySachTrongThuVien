@@ -5,7 +5,7 @@ interface IBook {
     name: string;
     author: string;
     keywords: object[];
-    publishers: object[];
+    publisher: object[]; 
 }
 
 const keywordSchema = new Schema({
@@ -17,9 +17,7 @@ const bookSchema = new Schema<IBook>({
     name: String,
     author: String,
     keywords: [keywordSchema],
-    publishers: [
-        { type: Schema.Types.ObjectId, ref: 'Publisher' }
-    ]
+    publisher: [{ type: Schema.Types.ObjectId, ref: 'Publisher' }]
 });
 
-export const book = model<IBook>('Book', bookSchema, 'books');
+export const Book = model<IBook>('Book', bookSchema, 'books');
