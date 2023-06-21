@@ -7,7 +7,6 @@ class Controller {
     static async getBookList(req, res) {
         try {
             const books = await book_schema_1.book.find({}).populate('publishers');
-            console.log(books[1].publishers);
             res.render('listBook', { books: books });
         }
         catch (error) {

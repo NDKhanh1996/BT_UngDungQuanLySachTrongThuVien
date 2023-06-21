@@ -6,7 +6,6 @@ export class Controller {
     static async getBookList(req: Request, res: Response): Promise<any> {
         try {
             const books = await book.find({}).populate('publishers');
-            console.log(books[1].publishers);
             res.render('listBook', { books: books });
         } catch (error) {
             res.render(error.message);
