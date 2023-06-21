@@ -24,7 +24,7 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 interface IPublisher {
-    publisherName: string;
+    Name: string;
 }
 export declare const publisher: import("mongoose").Model<IPublisher, {}, {}, {}, import("mongoose").Document<unknown, {}, IPublisher> & Omit<IPublisher & {
     _id: import("mongoose").Types.ObjectId;

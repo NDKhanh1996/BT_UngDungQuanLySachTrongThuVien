@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <div class="page-heading">   
+    <div class="page-heading">
         <h1>Register a new book</h1>
     </div>
     <form action="" method="POST">
@@ -25,24 +27,31 @@
         <div class="control-group">
             <div class="form-group floating-label-form-group controls">
                 <label>author</label>
-                <input type="text" class="form-control" id="author" name="author">    
-            </div>    
+                <input type="text" class="form-control" id="author" name="author">
+            </div>
         </div>
-        <div class="control-group">      
-            <div class="form-group floating-label-form-group controls">       
-                <label>keyword</label>      
+        <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+                <label>keyword</label>
                 <input type="text" class="form-control" id="keyword" name="keyword">
             </div>
         </div>
         <div class="control-group">
             <div class="form-group floating-label-form-group controls">
                 <label>publisher</label>
-                <input type="text" class="form-control" id="publisher" name="publisher">
+               
+                <select name="publisher_id" id="">
+                    <% authors.forEach(item=> { %>
+                        <checkbox value=<%=item._id %>><%= item.publisherName %>
+                        </checkbox>
+                        <% }) %>
+                </select>
             </div>
         </div>
-        <div class="form-group">  
+        <div class="form-group">
             <button type="submit" class="btn btn-primary">Create</button>
         </div>
     </form>
 </body>
+
 </html>

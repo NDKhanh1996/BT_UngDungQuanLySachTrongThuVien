@@ -1,11 +1,11 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 interface IBook {
     catalog: string;
     name: string;
     author: string;
     keywords: object[];
-    publisher: {type: Schema.Types.ObjectId, ref: "publisher";}[]; 
+    publishers: object[];
 }
 
 const keywordSchema = new Schema({
@@ -17,7 +17,9 @@ const bookSchema = new Schema<IBook>({
     name: String,
     author: String,
     keywords: [keywordSchema],
-    publisher: [{ type: Schema.Types.ObjectId, ref: 'publisher' }]
+    publishers: [
+        { type: Schema.Types.ObjectId, ref: 'Publisher' }
+    ]
 });
 
 export const book = model<IBook>('Book', bookSchema, 'books');
