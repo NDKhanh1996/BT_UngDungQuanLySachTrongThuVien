@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
-const publisher_schema_1 = require("../schemas/publisher.schema");
 const book_schema_1 = require("../schemas/book.schema");
+const publisher_schema_1 = require("../schemas/publisher.schema");
 class Controller {
     static async getBookList(req, res) {
         try {
@@ -15,8 +15,7 @@ class Controller {
     }
     static async showAddBookPage(req, res) {
         try {
-            let authors = await publisher_schema_1.publisher.find({});
-            res.render('createBook', { authors });
+            res.render('createBook');
         }
         catch (error) {
             res.render(error.message);

@@ -14,8 +14,7 @@ export class Controller {
 
     static async showAddBookPage(req: Request, res: Response): Promise<any> {
         try {
-            let authors = await publisher.find({})
-            res.render('createBook', { authors});
+            res.render('createBook');
         } catch (error) {
             res.render(error.message);
         }
