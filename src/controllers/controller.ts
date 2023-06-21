@@ -35,6 +35,7 @@ export class Controller {
             });
             newBook.keywords.push({ keyword: bookKeyword });
             await newBook.save();
+            await newPublisher.save();
             res.redirect('/')
         } catch (error) {
             res.render(error.message);
